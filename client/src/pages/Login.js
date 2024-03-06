@@ -2,13 +2,23 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Col, Form, Input, Row } from "antd";
+import { Button, Col, Form, Input, Row, message } from "antd";
 import authentication from "../assets/authentication.jpg";
 import "../style/App.css";
+import { LoginUser } from "../api/users";
 
 const Login = () => {
-  const onFinish = (values) => {
-    console.log("Values received: ", values);
+  const onFinish = async (values) => {
+    try {
+      const response = await LoginUser(values);
+      if (response.success) {
+        message.success(response.message);
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
   };
   return (
     <div>

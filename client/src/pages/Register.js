@@ -1,16 +1,25 @@
-// User registration page
-
 import React from "react";
-import { Link } from "react-router-dom";
-import { Button, Col, Form, Input, Row, Select } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Col, Form, Input, Row, Select, message } from "antd";
 import join from "../assets/join.jpg";
-
 import "../style/App.css";
+import { RegisterUser } from "../api/users";
 
 const Register = () => {
+  const navigate = useNavigate();
   const { Option } = Select;
-  const onFinish = (values) => {
-    console.log("Values received: ", values);
+  const onFinish = async (values) => {
+    try {
+      const response = await RegisterUser(values);
+      if (response.success) {
+        message.success(response.message);
+        navigate("/login");
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
   };
   return (
     <div>
@@ -95,7 +104,7 @@ const Register = () => {
                       },
                     ]}
                   >
-                    <Input />
+                    <Input type="phone" />
                   </Form.Item>
                 </Col>
               </Row>
