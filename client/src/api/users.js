@@ -5,7 +5,7 @@ export const LoginUser = async (payload) => {
     const data = await axiosInstance.post("/api/users/login", payload);
     return data;
   } catch (error) {
-    return error.reponse.data;
+    return error.response.data;
   }
 };
 
@@ -14,6 +14,6 @@ export const RegisterUser = async (payload) => {
     const data = await axiosInstance.post("/api/users/register", payload);
     return data;
   } catch (error) {
-    return error.reponse.data;
+    return error.response.data;
   }
 };
