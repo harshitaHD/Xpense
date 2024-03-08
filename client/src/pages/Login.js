@@ -8,14 +8,13 @@ import "../style/App.css";
 import { LoginUser } from "../api/users";
 
 const Login = () => {
-  const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
       const response = await LoginUser(values);
       if (response.success) {
         message.success(response.message);
         localStorage.setItem("token", response.token);
-        navigate("/");
+        window.location.href = "/";
         // console.log("working");
       } else {
         message.error(response.message);

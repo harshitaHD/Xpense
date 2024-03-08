@@ -1,5 +1,6 @@
 const { axiosInstance } = require(".");
 
+// user login
 export const LoginUser = async (payload) => {
   try {
     const { data } = await axiosInstance.post("/api/users/login", payload);
@@ -9,9 +10,20 @@ export const LoginUser = async (payload) => {
   }
 };
 
+// user registration
 export const RegisterUser = async (payload) => {
   try {
     const { data } = await axiosInstance.post("/api/users/register", payload);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+// user details
+export const GetUserInfo = async () => {
+  try {
+    const { data } = await axiosInstance.post("/api/users/get-user-info");
     return data;
   } catch (error) {
     return error.response.data;
