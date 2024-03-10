@@ -1,0 +1,22 @@
+.layout{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    height: 100%;
+}
+
+.body{
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.user{
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.header{
+    width: 100%;
+}

@@ -4,6 +4,7 @@ import { GetUserInfo } from "../api/users";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetUser } from "../redux/usersSlice";
+import DefaultLayout from "./DefaultLayout";
 
 const ProtectedRoute = (props) => {
   const { user } = useSelector((state) => state.users);
@@ -36,8 +37,7 @@ const ProtectedRoute = (props) => {
   return (
     user && (
       <div>
-        {user.firstName}
-        {props.children}
+        <DefaultLayout> {props.children}</DefaultLayout>
       </div>
     )
   );
