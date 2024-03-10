@@ -4,8 +4,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import "./style/App.css";
 import Home from "./pages/Home";
-import ProtectedRoute from "./pages/ProtectedRoute";
-import PublicRoute from "./pages/PublicRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
 
 const App = () => {
   return (
