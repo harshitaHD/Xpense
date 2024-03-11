@@ -1,7 +1,7 @@
 // User login page
 
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button, Col, Form, Input, Row, message } from "antd";
 import authentication from "../assets/authentication.jpg";
 import "../style/App.css";
@@ -89,7 +89,7 @@ const Login = () => {
               </Row>
 
               <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-btn">
+                <Button htmlType="submit" className="login-btn">
                   Login
                 </Button>
               </Form.Item>
