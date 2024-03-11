@@ -9,7 +9,7 @@
   }
   
   .header {
-    background-color: #189618;
+    background-color: #012641;
     border-radius: 10px;
     color: white;
     padding: 0px 20px;
@@ -35,18 +35,15 @@
   }
   
   .menu-item:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    color: #faaa20;
   }
   
   .active-menu-item {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    color: #ffe67c;
+    color: #faaa20;
   }
 
   .content{
     margin: 5px;
-    text-align: center;
+    /* text-align: center; */
   }
   

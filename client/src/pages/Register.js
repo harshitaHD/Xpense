@@ -33,7 +33,7 @@ const Register = () => {
             }}
           >
             <h2>
-              Begin your <span style={{ color: "#189618" }}>Xpen$e</span>{" "}
+              Begin your <span style={{ color: "#faaa20" }}>Xpen$e</span>{" "}
               journey
             </h2>
             <Form.Item>

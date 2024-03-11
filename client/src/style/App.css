@@ -7,11 +7,15 @@
 }
 
 .register-btn{
-    background-color: #189618;
+    background-color: #012641;
     color: white;
 }
 
 .login-btn{
-    background-color: #189618;
+    background-color: #012641;
     color: white;
+}
+
+table{
+    border: 1px solid grey;
 }

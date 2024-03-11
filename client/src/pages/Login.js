@@ -44,7 +44,7 @@ const Login = () => {
             }}
           >
             <h2>
-              Welcome Back to <span style={{ color: "#189618" }}>Xpen$e</span>
+              Welcome Back to <span style={{ color: "#faaa20" }}>Xpen$e</span>
             </h2>
             <Form.Item>
               <Link
