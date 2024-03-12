@@ -41,10 +41,10 @@ const Transactions = () => {
       >
         <Title title="Transactions" />
         <Space>
-          <Button type="primary" className="primary-outlined-btn">
+          <Button type="text" style={{ border: "1px solid black" }}>
             Deposit
           </Button>
-          <Button type="primary" className="primary-contained-btn">
+          <Button type="primary" style={{ backgroundColor: "#012641" }}>
             Transfer
           </Button>
         </Space>

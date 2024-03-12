@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Transaction = require("../models/transactionModel");
 const authMiddleware = require("../middlewares/authMiddleware");
+const User = require("../models/userModel");
 
 // money transfer
 router.post("/transfer-fund", authMiddleware, async (req, res) => {
@@ -27,6 +28,32 @@ router.post("/transfer-fund", authMiddleware, async (req, res) => {
   } catch (error) {
     res.send({
       message: "Transaction failed",
+      data: error.message,
+      success: false,
+    });
+  }
+});
+
+// receiver's account
+router.post("/verify-account", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.receiver });
+    if (user) {
+      res.send({
+        message: "Account Verified",
+        data: user,
+        success: true,
+      });
+    } else {
+      res.send({
+        message: "Account not found",
+        data: error.message,
+        success: false,
+      });
+    }
+  } catch (error) {
+    res.send({
+      message: "Account not found",
       data: error.message,
       success: false,
     });
