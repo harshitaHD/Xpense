@@ -10,7 +10,7 @@ const usersRoutes = require("./routes/userRoutes");
 const transactionRoute = require("./routes/transactionsRoutes");
 
 app.use("/api/users", usersRoutes);
-app.use("/api/transaction", transactionRoute);
+app.use("/api/transactions", transactionRoute);
 
 const PORT = process.env.PORT || 4000;
 

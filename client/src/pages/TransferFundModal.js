@@ -1,0 +1,122 @@
+import React from "react";
+import { Button, Col, Form, Input, Modal, Row, Space } from "antd";
+import { useDispatch } from "react-redux";
+import { VerifyAccount } from "../api/transactions";
+import { ShowLoading, HideLoading } from "../redux/loadersSlice";
+
+const TransferFundModal = ({
+  showTransferFundModal,
+  setShowTransferFundModal,
+  reloadData,
+}) => {
+  const [isVerified, setIsVerified] = React.useState(" ");
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const verifyAccount = async () => {
+    try {
+      dispatch(ShowLoading());
+      const response = await VerifyAccount({
+        receiver: form.getFieldValue("receiver"),
+      });
+      dispatch(HideLoading());
+      if (response.success) {
+        setIsVerified("true");
+      } else {
+        setIsVerified("false");
+      }
+    } catch (error) {
+      dispatch(HideLoading);
+      setIsVerified("false");
+    }
+  };
+  return (
+    <Modal
+      title="Transfer Fund"
+      visible={showTransferFundModal}
+      onCancel={() => setShowTransferFundModal(false)}
+      footer={null}
+    >
+      <Form form={form} layout="vertical">
+        <Row gutter={16}>
+          <Col flex="auto">
+            <Form.Item
+              label="Account Number"
+              name="receiver"
+              rules={[
+                { required: true, message: "Please enter account number" },
+              ]}
+            >
+              <Input
+                placeholder="Enter account number"
+                style={{ height: "40px", width: "100%" }}
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item>
+              <Button
+                type="primary"
+                style={{
+                  backgroundColor: "#012641",
+                  height: "40px",
+                  marginTop: "30px",
+                }}
+                onClick={verifyAccount}
+              >
+                Verify
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+
+        {isVerified === "true" && (
+          <div className="success-bg">Account Verified Successfully</div>
+        )}
+
+        {isVerified === "false" && (
+          <div className="error-bg">Invalid Account</div>
+        )}
+        <Form.Item
+          label="Amount"
+          name="amount"
+          rules={[{ required: true, message: "Please enter amount" }]}
+        >
+          <Input
+            type="number"
+            placeholder="Enter amount"
+            style={{ height: "40px" }}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Description"
+          name="description"
+          rules={[
+            { max: 100, message: "Description cannot exceed 100 characters" },
+          ]}
+        >
+          <Input.TextArea
+            placeholder="Enter description (max 100 characters)"
+            rows={4}
+          />
+        </Form.Item>
+        <Space>
+          <Button
+            type="text"
+            style={{ border: "1px solid black", height: "40px" }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="primary"
+            style={{ backgroundColor: "#012641", height: "40px" }}
+            onClick={() => setShowTransferFundModal(true)}
+          >
+            Transfer
+          </Button>
+        </Space>
+      </Form>
+    </Modal>
+  );
+};
+
+export default TransferFundModal;

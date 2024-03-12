@@ -19,3 +19,18 @@
 table{
     border: 1px solid grey;
 }
+
+.success-bg {
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .error-bg {
+    background-color: #f2dede;
+    color: #a94442;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
