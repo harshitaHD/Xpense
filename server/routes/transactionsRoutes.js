@@ -2,9 +2,10 @@ const router = require("express").Router();
 const Transaction = require("../models/transactionModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 const User = require("../models/userModel");
+const { request } = require("express");
 
 // money transfer
-router.post("/transfer-fund", authMiddleware, async (req, res) => {
+router.post("/transfer-funds", authMiddleware, async (req, res) => {
   try {
     const newTransaction = new Transaction(req.body);
     await newTransaction.save();
@@ -54,6 +55,28 @@ router.post("/verify-account", authMiddleware, async (req, res) => {
   } catch (error) {
     res.send({
       message: "Account not found",
+      data: error.message,
+      success: false,
+    });
+  }
+});
+
+router.post("/get-transactions", authMiddleware, async (req, res) => {
+  try {
+    const transactions = await Transaction.find({
+      $or: [{ sender: req.body.userId }, { receiver: req.body.userId }],
+    })
+      .sort({ createdAt: -1 })
+      .populate("sender")
+      .populate("receiver");
+    res.send({
+      message: "Transaction fetched",
+      data: transactions,
+      success: true,
+    });
+  } catch (error) {
+    res.send({
+      message: "Transaction not fetched",
       data: error.message,
       success: false,
     });

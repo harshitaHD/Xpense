@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Col, Form, Input, Modal, Row, Space } from "antd";
-import { useDispatch } from "react-redux";
-import { VerifyAccount } from "../api/transactions";
+import { Button, Col, Form, Input, Modal, Row, Space, message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { TransferFunds, VerifyAccount } from "../api/transactions";
 import { ShowLoading, HideLoading } from "../redux/loadersSlice";
 
 const TransferFundModal = ({
@@ -9,6 +9,7 @@ const TransferFundModal = ({
   setShowTransferFundModal,
   reloadData,
 }) => {
+  const { user } = useSelector((state) => state.users);
   const [isVerified, setIsVerified] = React.useState(" ");
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -29,14 +30,36 @@ const TransferFundModal = ({
       setIsVerified("false");
     }
   };
+  const onFinish = async (values) => {
+    try {
+      dispatch(ShowLoading());
+      const payload = {
+        ...values,
+        sender: user._id,
+        reference: values.reference || "No reference",
+        status: "success",
+      };
+      const response = await TransferFunds(payload);
+      if (response.success) {
+        setShowTransferFundModal(false);
+        message.success(response.message);
+      } else {
+        message.error(response.message);
+      }
+      dispatch(HideLoading());
+    } catch (error) {
+      message.error(error.message);
+      dispatch(HideLoading());
+    }
+  };
   return (
     <Modal
       title="Transfer Fund"
-      visible={showTransferFundModal}
+      open={showTransferFundModal}
       onCancel={() => setShowTransferFundModal(false)}
       footer={null}
     >
-      <Form form={form} layout="vertical">
+      <Form form={form} layout="vertical" onFinish={onFinish}>
         <Row gutter={16}>
           <Col flex="auto">
             <Form.Item
@@ -48,7 +71,7 @@ const TransferFundModal = ({
             >
               <Input
                 placeholder="Enter account number"
-                style={{ height: "40px", width: "100%" }}
+                style={{ height: "40px" }}
               />
             </Form.Item>
           </Col>
@@ -60,6 +83,8 @@ const TransferFundModal = ({
                   backgroundColor: "#012641",
                   height: "40px",
                   marginTop: "30px",
+                  color: "white",
+                  borderRadius: "5px",
                 }}
                 onClick={verifyAccount}
               >
@@ -79,7 +104,10 @@ const TransferFundModal = ({
         <Form.Item
           label="Amount"
           name="amount"
-          rules={[{ required: true, message: "Please enter amount" }]}
+          rules={[
+            { required: true, message: "Please enter amount" },
+            { max: user.balance, message: "Insufficient Balance" },
+          ]}
         >
           <Input
             type="number"
@@ -89,7 +117,7 @@ const TransferFundModal = ({
         </Form.Item>
         <Form.Item
           label="Description"
-          name="description"
+          name="reference"
           rules={[
             { max: 100, message: "Description cannot exceed 100 characters" },
           ]}
@@ -103,13 +131,18 @@ const TransferFundModal = ({
           <Button
             type="text"
             style={{ border: "1px solid black", height: "40px" }}
+            onClick={() => setShowTransferFundModal(false)}
           >
             Cancel
           </Button>
           <Button
             type="primary"
-            style={{ backgroundColor: "#012641", height: "40px" }}
-            onClick={() => setShowTransferFundModal(true)}
+            htmlType="submit"
+            style={{
+              backgroundColor: "#012641",
+              color: "white",
+              height: "40px",
+            }}
           >
             Transfer
           </Button>
