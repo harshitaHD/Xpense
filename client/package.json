@@ -10,6 +10,8 @@
     "antd": "^5.14.2",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
@@ -18,6 +20,7 @@
     "react-router-dom": "^6.22.1",
     "react-scripts": "5.0.1",
     "react-stripe-checkout": "^2.6.3",
+    "react-to-print": "^2.15.1",
     "redux": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
