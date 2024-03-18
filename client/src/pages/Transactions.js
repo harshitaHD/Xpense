@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { HideLoading, ShowLoading } from "../redux/loadersSlice";
 import { GetTransactionsOfUsers } from "../api/transactions";
 import moment from "moment";
+import DepositModal from "./DepositModal";
 
 const Transactions = () => {
   const [showTransferFundModal, setShowTransferFundModal] =
     React.useState(false);
+  const [showDepositModal, setShowDepositModal] = React.useState(false);
   const [data = [], setData] = React.useState([]);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
@@ -62,6 +64,21 @@ const Transactions = () => {
     {
       title: "Status",
       dataIndex: "status",
+      render: (text, record) => (
+        <span
+          style={{
+            color: record.status === "success" ? "#3c763d" : "inherit",
+            display: "inline-block",
+            padding: "5px 10px",
+            borderRadius: "20px",
+            border:
+              record.status === "success" ? "1.5px solid  #3c763d" : "inherit",
+            background: record.status === "success" ? "#d3f2d1" : "none",
+          }}
+        >
+          {text}
+        </span>
+      ),
     },
   ];
   const getData = async () => {
@@ -96,6 +113,7 @@ const Transactions = () => {
           <Button
             type="text"
             style={{ border: "1px solid black", height: "40px" }}
+            onClick={() => setShowDepositModal(true)}
           >
             Deposit
           </Button>
@@ -113,6 +131,12 @@ const Transactions = () => {
         <TransferFundModal
           showTransferFundModal={showTransferFundModal}
           setShowTransferFundModal={setShowTransferFundModal}
+        />
+      )}
+      {showDepositModal && (
+        <DepositModal
+          showDepositModal={showDepositModal}
+          setShowDepositModal={setShowDepositModal}
         />
       )}
     </div>
