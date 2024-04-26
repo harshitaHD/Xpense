@@ -314,29 +314,23 @@ const Transactions = () => {
   ];
 
   const printReceipt = (record) => {
-    const { _id, amount, status, reference, sender, receiver } = record;
+    const { _id, amount, reference, sender, receiver } = record;
     const receiptContent = `
-    <div style="text-align: center; margin: 0 auto; max-width: 600px; border: 1px solid black; font-size: 18px; background-color: #e1f6ff">
-      <h2 style = "text-align: center">Receipt</h2>
-      <div style="text-align: left;">
-        <strong>Transaction ID:</strong> ${_id}
+    <div style="text-align: center; margin: 0 auto; max-width: 600px; border: 2px solid #012641; font-size: 18px; background-color: #f2f2f2; padding: 20px; border-radius: 10px;">
+      <h2 style="color: #3c763d;">₹${amount}/-</h2>
+      <div style="text-align: left; margin-top: 20px;">
+        <strong style="color: #012641;">Transaction ID:</strong> ${_id}
       </div>
-      <div style="text-align: left;">
-        <strong>Amount:</strong> ₹${amount}/-
+      <div style="text-align: left; margin-top: 10px;">
+        <strong style="color: #012641;">Reference:</strong> ${reference}
       </div>
-      <div style="text-align: left;">
-        <strong>Status:</strong>  ${status}
+      <div style="text-align: left; margin-top: 10px;">
+        <strong style="color: #012641;">Sender:</strong> ${sender.firstName} ${sender.lastName} 
+        ${sender._id}
       </div>
-      <div style="text-align: left;">
-        <strong>Reference:</strong> ${reference}
-      </div>
-      <div style="text-align: left;">
-        <strong>Sender:</strong> ${sender.firstName} ${sender.lastName}
-                (${sender._id})
-      </div>
-      <div style="text-align: left;">
-        <strong>Receiver:</strong> ${receiver.firstName} ${receiver.lastName} 
-                (${receiver._id})
+      <div style="text-align: left; margin-top: 10px;">
+        <strong style="color: #012641;">Receiver:</strong> ${receiver.firstName} ${receiver.lastName}
+         ${receiver._id}
       </div>
     </div>
   `;

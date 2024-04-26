@@ -1,19 +1,22 @@
 import React from "react";
 import { Button, Form, Input, Modal, Space } from "antd";
+import ReactStripeCheckout from "react-stripe-checkout";
 
-const DepositModal = ({
-  showDepositModal,
-  setShowDepositModal,
-  reloadData,
-}) => {
+function DepositModal({ showDepositModal, setShowDepositModal, reloadData }) {
+  const [form] = Form.useForm();
+
+  const onToken = (token) => {
+    console.log(token);
+  };
+
   return (
     <Modal
       title="Deposit"
-      open={showDepositModal}
+      visible={showDepositModal}
       onCancel={() => setShowDepositModal(false)}
       footer={null}
     >
-      <Form layout="vertical">
+      <Form layout="vertical" form={form}>
         <Form.Item
           label="Amount"
           name="amount"
@@ -33,21 +36,29 @@ const DepositModal = ({
           >
             Cancel
           </Button>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{
-              backgroundColor: "#012641",
-              color: "white",
-              height: "40px",
-            }}
+          <ReactStripeCheckout
+            token={onToken}
+            currency="USD"
+            amount={form.getFieldValue("amount") * 100}
+            shippingAddress
+            stripeKey="pk_test_51OuasYSGv9mg4SRiJa50nfkDA0DhYX5grvFJdyeTqQR2WGjnmliq7fp2rWGsdEP6PshFV55XRHEN3LvqwChUH0qV00FD0L2Gxy"
           >
-            Deposit
-          </Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{
+                backgroundColor: "#012641",
+                color: "white",
+                height: "40px",
+              }}
+            >
+              Deposit
+            </Button>
+          </ReactStripeCheckout>
         </Space>
       </Form>
     </Modal>
   );
-};
+}
 
 export default DepositModal;

@@ -34,3 +34,5 @@ export const GetTransactionsOfUsers = async () => {
     return error.response.data;
   }
 };
+
+// deposit funds
