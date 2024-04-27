@@ -3,7 +3,8 @@ const Transaction = require("../models/transactionModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 const User = require("../models/userModel");
 const { request } = require("express");
-
+const stripe = require("stripe")(process.env.stripe_key);
+const { v4: uuidv4 } = require("uuid");
 // money transfer
 router.post("/transfer-funds", authMiddleware, async (req, res) => {
   try {
@@ -77,6 +78,65 @@ router.post("/get-transactions", authMiddleware, async (req, res) => {
   } catch (error) {
     res.send({
       message: "Transaction not fetched",
+      data: error.message,
+      success: false,
+    });
+  }
+});
+
+// deposit
+router.post("/deposit-funds", authMiddleware, async (req, res) => {
+  try {
+    const { token, amount } = req.body;
+    const customer = await stripe.customers.create({
+      email: token.email,
+      source: token.id,
+    });
+
+    const charge = await stripe.charges.create(
+      {
+        amount: amount,
+        currency: "usd",
+        customer: customer.id,
+        receipt_email: token.email,
+        description: `Deposited`,
+      },
+      {
+        idempotencyKey: uuidv4(),
+      }
+    );
+
+    if (charge.status === "succeeded") {
+      const newTransaction = new Transaction({
+        sender: req.body.userId,
+        receiver: req.body.userId,
+        amount: amount,
+        type: "deposit",
+        reference: "stripe deposit",
+        status: "success",
+      });
+      await newTransaction.save();
+
+      // Update user's balance
+      await User.findByIdAndUpdate(req.body.userId, {
+        $inc: { balance: amount },
+      });
+
+      res.send({
+        message: "Transaction Successful",
+        data: newTransaction,
+        success: true,
+      });
+    } else {
+      res.status(400).send({
+        message: "Transaction Failed",
+        data: charge,
+        success: false,
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: "Transaction Failed",
       data: error.message,
       success: false,
     });

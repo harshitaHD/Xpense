@@ -36,3 +36,14 @@ export const GetTransactionsOfUsers = async () => {
 };
 
 // deposit funds
+export const DepositFunds = async (payload) => {
+  try {
+    const { data } = await axiosInstance.post(
+      "/api/transactions/deposit-funds",
+      payload
+    );
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

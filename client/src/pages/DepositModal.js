@@ -1,18 +1,38 @@
 import React from "react";
-import { Button, Form, Input, Modal, Space } from "antd";
+import { Button, Form, Input, Modal, Space, message } from "antd";
 import ReactStripeCheckout from "react-stripe-checkout";
+import { DepositFunds } from "../api/transactions";
+import { useDispatch } from "react-redux";
+import { HideLoading, ShowLoading } from "../redux/loadersSlice";
 
 function DepositModal({ showDepositModal, setShowDepositModal, reloadData }) {
   const [form] = Form.useForm();
-
-  const onToken = (token) => {
-    console.log(token);
+  const dispatch = useDispatch();
+  const onToken = async (token) => {
+    try {
+      dispatch(ShowLoading());
+      const response = await DepositFunds({
+        token,
+        amount: form.getFieldValue("amount"),
+      });
+      dispatch(HideLoading());
+      if (response.success) {
+        reloadData();
+        setShowDepositModal(false);
+        message.success(response.message);
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
+    }
   };
 
   return (
     <Modal
       title="Deposit"
-      visible={showDepositModal}
+      open={showDepositModal}
       onCancel={() => setShowDepositModal(false)}
       footer={null}
     >
