@@ -1,12 +1,14 @@
 import React from "react";
 import { Button, Col, Form, Input, Modal, Row, Space, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { TransferFunds, VerifyAccount } from "../api/transactions";
-import { ShowLoading, HideLoading } from "../redux/loadersSlice";
+import { VerifyAccount } from "../api/transactions";
 
-const TransferFundModal = ({
-  showTransferFundModal,
-  setShowTransferFundModal,
+import { ShowLoading, HideLoading } from "../redux/loadersSlice";
+import { sendRequest } from "../api/requests";
+
+const NewRequestModal = ({
+  showNewRequestModal,
+  setShowNewRequestModal,
   reloadData,
 }) => {
   const { user } = useSelector((state) => state.users);
@@ -39,10 +41,10 @@ const TransferFundModal = ({
         reference: values.reference || "No reference",
         status: "success",
       };
-      const response = await TransferFunds(payload);
+      const response = await sendRequest(payload);
       if (response.success) {
         reloadData();
-        setShowTransferFundModal(false);
+        setShowNewRequestModal(false);
         message.success(response.message);
       } else {
         message.error(response.message);
@@ -56,8 +58,8 @@ const TransferFundModal = ({
   return (
     <Modal
       title="Transfer Fund"
-      open={showTransferFundModal}
-      onCancel={() => setShowTransferFundModal(false)}
+      open={showNewRequestModal}
+      onCancel={() => setShowNewRequestModal(false)}
       footer={null}
     >
       <Form form={form} layout="vertical" onFinish={onFinish}>
@@ -117,8 +119,8 @@ const TransferFundModal = ({
           />
         </Form.Item>
         <Form.Item
-          label="Reference"
-          name="reference"
+          label="Description"
+          name="description"
           rules={[
             { max: 100, message: "Description cannot exceed 100 characters" },
           ]}
@@ -132,7 +134,7 @@ const TransferFundModal = ({
           <Button
             type="text"
             style={{ border: "1px solid black", height: "40px" }}
-            onClick={() => setShowTransferFundModal(false)}
+            onClick={() => setShowNewRequestModal(false)}
           >
             Cancel
           </Button>
@@ -145,7 +147,7 @@ const TransferFundModal = ({
               height: "40px",
             }}
           >
-            Transfer
+            Request
           </Button>
         </Space>
       </Form>
@@ -153,4 +155,4 @@ const TransferFundModal = ({
   );
 };
 
-export default TransferFundModal;
+export default NewRequestModal;

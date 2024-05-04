@@ -58,9 +58,10 @@ function DepositModal({ showDepositModal, setShowDepositModal, reloadData }) {
           </Button>
           <ReactStripeCheckout
             token={onToken}
-            currency="USD"
-            amount={form.getFieldValue("amount") * 100}
+            currency="INR"
+            amount={form.getFieldValue("amount") * 1000}
             shippingAddress
+            billingAddress
             stripeKey="pk_test_51OuasYSGv9mg4SRiJa50nfkDA0DhYX5grvFJdyeTqQR2WGjnmliq7fp2rWGsdEP6PshFV55XRHEN3LvqwChUH0qV00FD0L2Gxy"
           >
             <Button

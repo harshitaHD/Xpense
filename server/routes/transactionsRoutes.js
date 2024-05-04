@@ -93,10 +93,10 @@ router.post("/deposit-funds", authMiddleware, async (req, res) => {
       source: token.id,
     });
 
-    const charge = await stripe.charges.create(
+    const charge = await stripe.paymentIntents.create(
       {
         amount: amount,
-        currency: "usd",
+        currency: "inr",
         customer: customer.id,
         receipt_email: token.email,
         description: `Deposited`,

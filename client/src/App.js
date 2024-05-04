@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import Transactions from "./pages/Transactions";
+import Requests from "./pages/Requests";
 
 const App = () => {
   return (
@@ -44,6 +45,15 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Transactions />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/requests"
+            element={
+              <ProtectedRoute>
+                <Requests />
               </ProtectedRoute>
             }
           />
