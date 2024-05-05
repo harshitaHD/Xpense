@@ -1,0 +1,23 @@
+.main-profile-div {
+    text-align: center;
+  }
+  
+  .profile-form-container {
+    padding: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  
+  .profile-form-label {
+    font-weight: bold;
+  }
+  
+
+  /* Responsive Styles */
+  @media screen and (max-width: 768px) {
+    .profile-form-container {
+      margin: 0;
+      padding: 10px;
+    }
+  }
+  

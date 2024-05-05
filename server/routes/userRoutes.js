@@ -97,4 +97,24 @@ router.post("/get-user-info", authMiddleware, async (req, res) => {
   }
 });
 
+// update profile
+router.put("/:userId", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const updatedUser = req.body;
+
+    await User.findByIdAndUpdate(userId, updatedUser);
+
+    res.status(200).json({
+      success: true,
+      message: "User profile updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;

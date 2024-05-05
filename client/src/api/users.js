@@ -29,3 +29,14 @@ export const GetUserInfo = async () => {
     return error.response.data;
   }
 };
+
+export const updateUserProfile = async (userId, payload) => {
+  try {
+    const { data } = await axiosInstance.put(`/api/users/${userId}`, payload);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+// Function to update password

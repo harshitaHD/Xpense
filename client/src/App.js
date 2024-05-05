@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import Transactions from "./pages/Transactions";
 import Requests from "./pages/Requests";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -54,6 +55,15 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Requests />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />

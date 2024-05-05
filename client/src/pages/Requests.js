@@ -7,10 +7,8 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { HideLoading, ShowLoading } from "../redux/loadersSlice";
 
-const { TabPane } = Tabs;
-
 const Requests = () => {
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState({ sent: [], received: [] });
   const [showNewRequestModal, setShowNewRequestModal] = React.useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
@@ -48,7 +46,41 @@ const Requests = () => {
       title: "Status",
       dataIndex: "status",
     },
+    {
+      title: "Action",
+      dataIndex: "action",
+      render: (text, record) => {
+        if (record.status === "pending" && record.receiver._id === user._id) {
+          return (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "16px",
+              }}
+            >
+              <Space>
+                <Button
+                  type="text"
+                  style={{ border: "1px solid black", height: "40px" }}
+                >
+                  Reject
+                </Button>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#012641", height: "40px" }}
+                >
+                  Accept
+                </Button>
+              </Space>
+            </div>
+          );
+        }
+      },
+    },
   ];
+
   const getData = async () => {
     try {
       dispatch(ShowLoading());
@@ -75,6 +107,20 @@ const Requests = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const items = [
+    {
+      label: "Sent",
+      key: "1",
+      content: <Table columns={columns} dataSource={data.sent} />,
+    },
+    {
+      label: "Received",
+      key: "2",
+      content: <Table columns={columns} dataSource={data.received} />,
+    },
+  ];
+
   return (
     <div>
       <div
@@ -95,14 +141,7 @@ const Requests = () => {
           </Button>
         </Space>
       </div>
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="Sent" key="1">
-          <Table columns={columns} dataSource={data.sent} />
-        </TabPane>
-        <TabPane tab="Received" key="2">
-          <Table columns={columns} dataSource={data.received} />
-        </TabPane>
-      </Tabs>
+      <Tabs defaultActiveKey="1" items={items} />
       {showNewRequestModal && (
         <NewRequestModal
           showNewRequestModal={showNewRequestModal}

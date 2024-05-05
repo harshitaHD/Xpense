@@ -72,6 +72,7 @@ const DefaultLayout = ({ children }) => {
       onClick: () => navigate("/profile"),
       path: "/profile",
     },
+
     {
       title: "Logout",
       icon: <i className="ri-logout-box-r-line"></i>,
