@@ -3,6 +3,7 @@ import "../style/Profile.css";
 import { useSelector } from "react-redux";
 import { Button, Form, Input, message, Row, Col } from "antd";
 import { updateUserProfile } from "../api/users";
+import update from "../assets/update.jpg";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.users);
@@ -22,14 +23,12 @@ const Profile = () => {
   };
 
   return (
-    <div style={{ textAlign: "center" }} className="main-profile-div">
-      <Row justify="center">
+    <div className="main-profile-div">
+      <Row justify="center" align="middle" style={{ minHeight: "80vh" }}>
         <Col xs={24} sm={12}>
           <div
             style={{
-              padding: "20px",
-              marginLeft: "10%",
-              marginRight: "10%",
+              margin: "20px",
             }}
           >
             <Form
@@ -63,6 +62,14 @@ const Profile = () => {
                     ]}
                   >
                     <Input disabled placeholder={user.lastName} />
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item label="Account Number" name="user_id">
+                    <Input disabled placeholder={user._id} />
                   </Form.Item>
                 </Col>
               </Row>
@@ -137,7 +144,7 @@ const Profile = () => {
                 </Col>
               </Row>
 
-              <Form.Item>
+              <Form.Item style={{ textAlign: "left" }}>
                 <Button
                   htmlType="submit"
                   className="update-btn"
@@ -151,6 +158,11 @@ const Profile = () => {
                 </Button>
               </Form.Item>
             </Form>
+          </div>
+        </Col>
+        <Col xs={24} sm={8}>
+          <div style={{ padding: "10px", textAlign: "center" }}>
+            <img src={update} alt="Update" style={{ maxWidth: "100%" }} />
           </div>
         </Col>
       </Row>

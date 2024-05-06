@@ -146,6 +146,7 @@ const Requests = () => {
         <NewRequestModal
           showNewRequestModal={showNewRequestModal}
           setShowNewRequestModal={setShowNewRequestModal}
+          reloadData={getData}
         />
       )}
     </div>

@@ -1,0 +1,43 @@
+.profile-img{
+    width: 200px;
+    height: auto;
+}
+
+ .info-div {
+    margin-top: 20px;
+    width: 33%;
+    background-image: url("../assets/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    border-radius: 25px;
+    padding: 20px;
+    margin: 30px auto; 
+    text-align: left;
+  }
+
+  .acc-div{
+    margin-top: 20px;
+  }
+
+  .name-div{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    font-size: 20px;
+  }
+
+  .chip-img{
+    width: 90px;
+     height: 70px;
+  }
+
+  .balance-div{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+
+
+  
+  
