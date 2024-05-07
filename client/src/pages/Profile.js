@@ -39,35 +39,6 @@ const Profile = () => {
             >
               <Row gutter={16}>
                 <Col xs={24} sm={12}>
-                  <Form.Item
-                    label="First Name"
-                    name="firstName"
-                    rules={[
-                      {
-                        message: "Please enter your first name",
-                      },
-                    ]}
-                  >
-                    <Input disabled placeholder={user.firstName} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={12}>
-                  <Form.Item
-                    label="Last Name"
-                    name="lastName"
-                    rules={[
-                      {
-                        message: "Please enter your last name",
-                      },
-                    ]}
-                  >
-                    <Input disabled placeholder={user.lastName} />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={16}>
-                <Col span={24}>
                   <Form.Item label="Account Number" name="user_id">
                     <Input disabled placeholder={user._id} />
                   </Form.Item>
@@ -76,24 +47,25 @@ const Profile = () => {
 
               <Row gutter={16}>
                 <Col xs={24} sm={12}>
-                  <Form.Item
-                    label="Email"
-                    name="email"
-                    rules={[{ message: "Please enter your email" }]}
-                  >
+                  <Form.Item label="First Name" name="firstName">
+                    <Input disabled placeholder={user.firstName} />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} sm={12}>
+                  <Form.Item label="Last Name" name="lastName">
+                    <Input disabled placeholder={user.lastName} />
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              <Row gutter={16}>
+                <Col xs={24} sm={12}>
+                  <Form.Item label="Email" name="email">
                     <Input type="email" placeholder={user.email} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} sm={12}>
-                  <Form.Item
-                    label="Phone Number"
-                    name="phoneNumber"
-                    rules={[
-                      {
-                        message: "Please enter your phone number",
-                      },
-                    ]}
-                  >
+                  <Form.Item label="Phone Number" name="phoneNumber">
                     <Input type="phone" placeholder={user.phoneNumber} />
                   </Form.Item>
                 </Col>
