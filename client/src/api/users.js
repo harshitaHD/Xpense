@@ -39,4 +39,25 @@ export const updateUserProfile = async (userId, payload) => {
   }
 };
 
-// Function to update password
+// admin
+export const GetAllUsers = async () => {
+  try {
+    const { data } = await axiosInstance.get("/api/users/get-all-users");
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+// activate users
+export const UpdateUserVerifiedStatus = async (payload) => {
+  try {
+    const { data } = await axiosInstance.post(
+      "/api/users/update-user-verified-status",
+      payload
+    );
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

@@ -3,11 +3,11 @@ import { message } from "antd";
 import { GetUserInfo } from "../api/users";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { SetUser } from "../redux/usersSlice";
+import { ReloadUser, SetUser } from "../redux/usersSlice";
 import DefaultLayout from "./DefaultLayout";
 
 const ProtectedRoute = (props) => {
-  const { user } = useSelector((state) => state.users);
+  const { user, reloadUser } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,6 +20,7 @@ const ProtectedRoute = (props) => {
         message.error(response.message);
         navigate("/login");
       }
+      dispatch(ReloadUser(false));
     } catch (error) {
       navigate("/login");
       message.error(error.message);
@@ -34,6 +35,12 @@ const ProtectedRoute = (props) => {
       navigate("/login");
     }
   }, []);
+
+  useEffect(() => {
+    if (reloadUser) {
+      getData();
+    }
+  }, [reloadUser]);
   return (
     user && (
       <div>
