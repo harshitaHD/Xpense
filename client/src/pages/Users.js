@@ -115,6 +115,7 @@ const Users = () => {
         dataSource={users}
         columns={columns}
         style={{ marginTop: "25px" }}
+        rowKey="_id"
       />
     </div>
   );

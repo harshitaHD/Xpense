@@ -92,12 +92,8 @@ const Transactions = () => {
         <Button
           onClick={() => printReceipt(record)}
           style={{
-            display: "inline-block",
-            padding: "5px 10px",
-            borderRadius: "20px",
-            color: "#0d88d9",
-            border: "1.5px solid #0d88d9",
-            backgroundColor: "#cfeffc",
+            border: "1px solid black",
+            height: "40px",
           }}
         >
           Receipt
