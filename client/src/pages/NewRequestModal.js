@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Col, Form, Input, Modal, Row, Space, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { VerifyAccount } from "../api/transactions";
-
 import { ShowLoading, HideLoading } from "../redux/loadersSlice";
 import { sendRequest } from "../api/requests";
 
