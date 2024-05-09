@@ -106,6 +106,7 @@ const Requests = () => {
 
   useEffect(() => {
     getData();
+    // eslint-disable-next-line
   }, []);
 
   const items = [

@@ -40,7 +40,7 @@ const Profile = () => {
               <Row gutter={16}>
                 <Col xs={24} sm={12}>
                   <Form.Item label="Account Number" name="user_id">
-                    <Input disabled placeholder={user._id} />
+                    <Input readOnly placeholder={user._id} />
                   </Form.Item>
                 </Col>
               </Row>
@@ -48,12 +48,12 @@ const Profile = () => {
               <Row gutter={16}>
                 <Col xs={24} sm={12}>
                   <Form.Item label="First Name" name="firstName">
-                    <Input disabled placeholder={user.firstName} />
+                    <Input readOnly placeholder={user.firstName} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} sm={12}>
                   <Form.Item label="Last Name" name="lastName">
-                    <Input disabled placeholder={user.lastName} />
+                    <Input readOnly placeholder={user.lastName} />
                   </Form.Item>
                 </Col>
               </Row>
@@ -82,7 +82,7 @@ const Profile = () => {
                       },
                     ]}
                   >
-                    <Input disabled placeholder={user.identificationType} />
+                    <Input readOnly placeholder={user.identificationType} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} sm={12}>
@@ -95,7 +95,7 @@ const Profile = () => {
                       },
                     ]}
                   >
-                    <Input disabled placeholder={user.identificationNumber} />
+                    <Input readOnly placeholder={user.identificationNumber} />
                   </Form.Item>
                 </Col>
               </Row>

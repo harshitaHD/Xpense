@@ -107,10 +107,7 @@ const NewRequestModal = ({
         <Form.Item
           label="Amount"
           name="amount"
-          rules={[
-            { required: true, message: "Please enter amount" },
-            { max: user.balance, message: "Insufficient Balance" },
-          ]}
+          rules={[{ required: true, message: "Please enter amount" }]}
         >
           <Input
             type="number"

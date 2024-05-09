@@ -12,6 +12,7 @@
     "antd": "^5.14.2",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "moment": "^2.30.1",
