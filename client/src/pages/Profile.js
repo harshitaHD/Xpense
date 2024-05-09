@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import "../style/Profile.css";
 import { useSelector } from "react-redux";
 import { Button, Form, Input, message, Row, Col } from "antd";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { updateUserProfile } from "../api/users";
 import update from "../assets/update.jpg";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.users);
   const [form] = Form.useForm();
+  const [copied, setCopied] = useState(false);
 
   const onFinish = async (values) => {
     try {
@@ -42,6 +44,25 @@ const Profile = () => {
                   <Form.Item label="Account Number" name="user_id">
                     <Input readOnly placeholder={user._id} />
                   </Form.Item>
+                </Col>
+                <Col xs={24} sm={1}>
+                  <CopyToClipboard
+                    text={user._id}
+                    onCopy={() => {
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    }}
+                  >
+                    <Button
+                      icon={<i className="ri-file-copy-line" />}
+                      style={{ marginTop: "31px" }}
+                    />
+                  </CopyToClipboard>
+                  {copied && (
+                    <span style={{ marginLeft: 5 }}>
+                      {message.success("Copied!")}
+                    </span>
+                  )}
                 </Col>
               </Row>
 

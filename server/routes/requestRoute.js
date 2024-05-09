@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const Request = require("../models/requestModel");
 const authMiddleware = require("../middlewares/authMiddleware");
-const { request } = require("express");
 const User = require("../models/userModel");
 const Transactions = require("../models/transactionModel");
 
@@ -52,6 +51,7 @@ router.post("/send-request", authMiddleware, async (req, res) => {
 router.post("/update-request-status", authMiddleware, async (req, res) => {
   try {
     if (req.body.status === "accepted") {
+      // Create a new transaction
       const transaction = new Transactions({
         sender: req.body.receiver._id,
         receiver: req.body.sender._id,
@@ -60,13 +60,19 @@ router.post("/update-request-status", authMiddleware, async (req, res) => {
         status: "success",
       });
       await transaction.save();
+
+      // Update sender's balance
       await User.findByIdAndUpdate(req.body.sender._id, {
         $inc: { balance: req.body.amount },
       });
+
+      // Update receiver's balance
       await User.findByIdAndUpdate(req.body.receiver._id, {
         $inc: { balance: -req.body.amount },
       });
     }
+
+    // Update request status
     await Request.findByIdAndUpdate(req.body._id, {
       status: req.body.status,
     });
@@ -77,11 +83,7 @@ router.post("/update-request-status", authMiddleware, async (req, res) => {
       success: true,
     });
   } catch (error) {
-    res.send({
-      data: error,
-      message: error.message,
-      success: false,
-    });
+    res.status(500).json({ error: error.message });
   }
 });
 
