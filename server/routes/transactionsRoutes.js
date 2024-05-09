@@ -84,60 +84,42 @@ router.post("/get-transactions", authMiddleware, async (req, res) => {
   }
 });
 
-// deposit
+// deposit module
 router.post("/deposit-funds", authMiddleware, async (req, res) => {
   try {
-    const { token, amount } = req.body;
-    const customer = await stripe.customers.create({
-      email: token.email,
-      source: token.id,
-    });
+    const { amount } = req.body;
 
-    const charge = await stripe.paymentIntents.create(
+    // Update user's balance
+    const updatedUser = await User.findByIdAndUpdate(
+      req.body.userId,
       {
-        amount: amount,
-        currency: "inr",
-        customer: customer.id,
-        receipt_email: token.email,
-        description: `Deposited`,
+        $inc: { balance: amount },
       },
-      {
-        idempotencyKey: uuidv4(),
-      }
+      { new: true }
     );
 
-    if (charge.status === "succeeded") {
-      const newTransaction = new Transaction({
-        sender: req.body.userId,
-        receiver: req.body.userId,
-        amount: amount,
-        type: "deposit",
-        reference: "stripe deposit",
-        status: "success",
-      });
-      await newTransaction.save();
+    const newTransaction = new Transaction({
+      sender: req.body.userId,
+      receiver: req.body.userId,
+      amount: amount,
+      type: "deposit",
+      reference: "Deposit",
+      status: "success",
+    });
+    await newTransaction.save();
 
-      // Update user's balance
-      await User.findByIdAndUpdate(req.body.userId, {
-        $inc: { balance: amount },
-      });
-
-      res.send({
-        message: "Transaction Successful",
-        data: newTransaction,
-        success: true,
-      });
-    } else {
-      res.status(400).send({
-        message: "Transaction Failed",
-        data: charge,
-        success: false,
-      });
-    }
+    res.send({
+      message: "Transaction Successful",
+      data: {
+        transaction: newTransaction,
+        user: updatedUser,
+      },
+      success: true,
+    });
   } catch (error) {
     res.status(500).send({
       message: "Transaction Failed",
-      data: error.message,
+      error: error.message,
       success: false,
     });
   }

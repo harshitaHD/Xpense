@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Form, Input, Modal, Space, message } from "antd";
-import ReactStripeCheckout from "react-stripe-checkout";
 import { DepositFunds } from "../api/transactions";
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../redux/loadersSlice";
@@ -8,14 +7,14 @@ import { HideLoading, ShowLoading } from "../redux/loadersSlice";
 function DepositModal({ showDepositModal, setShowDepositModal, reloadData }) {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const onToken = async (token) => {
+
+  const handleDeposit = async () => {
     try {
       dispatch(ShowLoading());
-      const response = await DepositFunds({
-        token,
-        amount: form.getFieldValue("amount"),
-      });
+      const values = await form.validateFields();
+      const response = await DepositFunds({ amount: values.amount });
       dispatch(HideLoading());
+
       if (response.success) {
         reloadData();
         setShowDepositModal(false);
@@ -25,7 +24,7 @@ function DepositModal({ showDepositModal, setShowDepositModal, reloadData }) {
       }
     } catch (error) {
       dispatch(HideLoading());
-      message.error(error.message);
+      message.error("An error occurred while depositing funds");
     }
   };
 
@@ -36,7 +35,19 @@ function DepositModal({ showDepositModal, setShowDepositModal, reloadData }) {
       onCancel={() => setShowDepositModal(false)}
       footer={null}
     >
-      <Form layout="vertical" form={form}>
+      <Form layout="vertical" form={form} onFinish={handleDeposit}>
+        <Form.Item
+          label="Account Number"
+          name="receiver"
+          rules={[
+            { required: true, message: "Please enter your account number" },
+          ]}
+        >
+          <Input
+            placeholder="Enter account number"
+            style={{ height: "40px" }}
+          />
+        </Form.Item>
         <Form.Item
           label="Amount"
           name="amount"
@@ -56,26 +67,17 @@ function DepositModal({ showDepositModal, setShowDepositModal, reloadData }) {
           >
             Cancel
           </Button>
-          <ReactStripeCheckout
-            token={onToken}
-            currency="INR"
-            amount={form.getFieldValue("amount") * 1000}
-            shippingAddress
-            billingAddress
-            stripeKey="pk_test_51OuasYSGv9mg4SRiJa50nfkDA0DhYX5grvFJdyeTqQR2WGjnmliq7fp2rWGsdEP6PshFV55XRHEN3LvqwChUH0qV00FD0L2Gxy"
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{
+              backgroundColor: "#012641",
+              color: "white",
+              height: "40px",
+            }}
           >
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{
-                backgroundColor: "#012641",
-                color: "white",
-                height: "40px",
-              }}
-            >
-              Deposit
-            </Button>
-          </ReactStripeCheckout>
+            Deposit
+          </Button>
         </Space>
       </Form>
     </Modal>
