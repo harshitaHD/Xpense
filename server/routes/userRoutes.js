@@ -128,7 +128,7 @@ router.put("/:userId", authMiddleware, async (req, res) => {
 // admin
 router.get("/get-all-users", authMiddleware, async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().sort({ createdAt: -1 });
     res.send({
       message: "User fetched",
       data: users,

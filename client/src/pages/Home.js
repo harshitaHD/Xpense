@@ -9,7 +9,6 @@ import "../style/Home.css";
 const Home = () => {
   const { user } = useSelector((state) => state.users);
   const lastFourDigits = user._id.slice(-4);
-  // const dispatch = useDispatch();
   return (
     <div style={{ textAlign: "center" }} className="main">
       <Title title={` Namaste, ${user.firstName} ${user.lastName}`} />
