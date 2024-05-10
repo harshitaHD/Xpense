@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Form, Input, Modal, Row, Space, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { TransferFunds, VerifyAccount } from "../api/transactions";
@@ -11,9 +11,10 @@ const TransferFundModal = ({
   reloadData,
 }) => {
   const { user } = useSelector((state) => state.users);
-  const [isVerified, setIsVerified] = React.useState(" ");
+  const [isVerified, setIsVerified] = useState(null);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+
   const verifyAccount = async () => {
     try {
       dispatch(ShowLoading());
@@ -21,16 +22,13 @@ const TransferFundModal = ({
         receiver: form.getFieldValue("receiver"),
       });
       dispatch(HideLoading());
-      if (response.success) {
-        setIsVerified("true");
-      } else {
-        setIsVerified("false");
-      }
+      setIsVerified(response.success);
     } catch (error) {
-      dispatch(HideLoading);
-      setIsVerified("false");
+      dispatch(HideLoading());
+      setIsVerified(false);
     }
   };
+
   const onFinish = async (values) => {
     try {
       dispatch(ShowLoading());
@@ -41,6 +39,7 @@ const TransferFundModal = ({
         status: "success",
       };
       const response = await TransferFunds(payload);
+
       if (response.success) {
         reloadData();
         setShowTransferFundModal(false);
@@ -49,16 +48,25 @@ const TransferFundModal = ({
       } else {
         message.error(response.message);
       }
+
       dispatch(HideLoading());
     } catch (error) {
       message.error(error.message);
       dispatch(HideLoading());
     }
   };
+
+  const validateAmount = (_, value) => {
+    if (value && Number(value) > user.balance) {
+      return Promise.reject("Insufficient Balance");
+    }
+    return Promise.resolve();
+  };
+
   return (
     <Modal
       title="Transfer Fund"
-      open={showTransferFundModal}
+      visible={showTransferFundModal}
       onCancel={() => setShowTransferFundModal(false)}
       footer={null}
     >
@@ -97,19 +105,20 @@ const TransferFundModal = ({
           </Col>
         </Row>
 
-        {isVerified === "true" && (
+        {isVerified === true && (
           <div className="success-bg">Account Verified Successfully</div>
         )}
 
-        {isVerified === "false" && (
+        {isVerified === false && (
           <div className="error-bg">Invalid Account</div>
         )}
+
         <Form.Item
           label="Amount"
           name="amount"
           rules={[
             { required: true, message: "Please enter amount" },
-            { max: user.balance, message: "Insufficient Balance" },
+            { validator: validateAmount },
           ]}
         >
           <Input
@@ -118,6 +127,7 @@ const TransferFundModal = ({
             style={{ height: "40px" }}
           />
         </Form.Item>
+
         <Form.Item
           label="Reference"
           name="reference"
@@ -130,6 +140,7 @@ const TransferFundModal = ({
             rows={4}
           />
         </Form.Item>
+
         <Space>
           <Button
             type="text"

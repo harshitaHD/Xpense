@@ -144,7 +144,7 @@ function DepositModal({ showDepositModal, setShowDepositModal, reloadData }) {
           />
         </Form.Item>
         <Form.Item
-          label="Amount"
+          label="Amount (₹)"
           name="amount"
           rules={[{ required: true, message: "Please input amount" }]}
         >
